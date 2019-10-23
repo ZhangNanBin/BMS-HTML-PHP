@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图书管理</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="x-nav">
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+        </a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body demoTable">
+                        <div class="layui-form layui-col-space5">
+
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <input type="text" id="demoReload" placeholder="请输入图书索书号检索" autocomplete="off"
+                                    class="layui-input"></div>
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <button class="layui-btn" data-type="reload">搜索</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="layui-card-header">
+                        <button class="layui-btn" onclick="xadmin.open('添加图书信息 ','AddBook.html',800,600)">
+                            <i class="layui-icon"></i>添加图书信息</button></div>
+                    <div class="layui-card-body ">
+                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹出层 -->
+    <div class="layui-row" id="popUpdateTest" style="display:none;margin-left:200px;margin-top:30px">
+        <div class="layui-col-md10">
+            <form class="layui-form" lay-filter="formTestFilter">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>图书条形码
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Barcode" name="Barcode" readonly="readonly" autocomplete="off"
+                            placeholder="请输入图书条形码 " class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>图书索书号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="BookCallNo" name="BookCallNo" readonly="readonly"  autocomplete="off" placeholder="请输入图书索书号"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>操作员
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Operator" name="Operator" class="layui-input" placeholder="请输入操作员">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>是否外借
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="State" name="State" class="layui-input" placeholder="是否外借">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>是否禁用
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="Disabled" name="Disabled" class="layui-input" placeholder="是否禁用">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <a class="layui-btn" id="btn1" Width="60">修改</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">禁用</a>
+    </script>
+    <script type="text/javascript">
+        layui.use(['table', 'layer', 'form', 'laydate'], function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            var form = layui.form;
+            var laydate = layui.laydate;
+            popForm = layui.form;
+
+            table.render({
+                elem: '#test',
+                toolbar: true,
+                loading: true,
+                title: "读者类型列表",
+                url: '../php/Books.php',
+                where: {
+                    action: 'GetAll'
+                },
+                cols: [
+                    [{
+                        field: 'Barcode',
+                        title: '图书条形码',
+                        sort: true,
+                        align: 'center',
+                    }, {
+                        field: 'BookCallNo',
+                        title: '图书索书号',
+                        align: 'center',
+                    }, {
+                        field: 'Operator',
+                        title: '操作员',
+                        align: 'center',
+                    }, {
+                        field: 'State',
+                        title: '是否外借',
+                        align: 'center',
+                        templet: function (d) {
+                            if (d.State == 1)
+                                return "<div style='color:red'>已外借</div>"
+                            else
+                                return "<div style='color:red'>否</div>"
+                        }
+                    }, {
+                        field: 'Disabled',
+                        title: '是否禁用',
+                        align: 'center',
+                        templet: function (d) {
+                            if (d.Disabled == 1)
+                                return "<div style='color:red'>已禁用</div>"
+                            else
+                                return "<div style='color:red'>否</div>"
+                        }
+                    }, {
+                        field: 'caozuo',
+                        title: '操作',
+                        toolbar: '#barDemo',
+                        width: 120,
+                        align: 'center'
+                    }]
+                ],
+                id: 'testReload',
+                page: true
+            });
+
+            //start
+            table.on('tool(test)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                if (layEvent === 'del') { //删除
+                    layer.confirm('确定禁用该图书吗？', function (index) {
+                        layer.close(index);
+                        layer.load();
+                        var flag = data.Disabled;
+                        if(flag != false)
+                            flag =false;
+                        else
+                            flag = true;
+                        $.getJSON("../php/Books.php", {
+                            action: 'Disabled',
+                            barcode: data.Barcode,
+                            disabled: flag
+                        }, function (msg) {
+                            if (msg.code == 0) {
+                                layer.msg("禁用成功", {icon: 1});
+                                layer.closeAll('loading');
+                            } else {
+                                layer.msg(msg.msg, { icon: 5 });
+                                layer.closeAll('loading');
+                            }
+                        })
+
+                    });
+                } else if (layEvent === 'edit') { //编辑
+                    layer.open({
+                        type: 1,
+                        title: '编辑',
+                        area: ['800px', '600px'],
+                        content: $("#popUpdateTest")
+                    });
+                    popForm.val("formTestFilter", {
+                        "Barcode": data.Barcode,
+                        "BookCallNo": data.BookCallNo,
+                        "Operator": data.Operator,
+                        "State": data.State,
+                        "Disabled": data.Disabled
+                    });
+                    popForm.render(null, 'formTestFilter');
+                    //---------------点击修改按钮---------------------------    
+                    $("#btn1").click(function () {
+                        layer.confirm('要修改条形码为《' + data.Barcode + "》的图书信息吗?", function (index) {
+                            var edit = {
+                                action: "Update",
+                                barcode: $("#Barcode").val(),
+                                bookCallNo: $("#BookCallNo").val(),
+                                operator: $("#Operator").val(),
+                                state: $("#State").val(),
+                                disabled: $("#Disabled").val()
+                            };
+                            $.ajax({ // 开始异步请求
+                                url: '../php/Books.php',
+                                type: 'GET',
+                                data: edit,
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                success: function (result) {
+                                    if (result.code == 0) { //修改成功
+                                        layer.msg("修改成功", {icon: 1});
+                                    } else { //修改失败
+                                        layer.msg(result.msg, { icon: 5 });
+                                    }
+                                }
+                            });
+                        }) //弹框结束
+                    }); //单击事件
+                } //编辑结束
+
+            }); //end
+
+
+            //---------------表格搜索重载----------------
+            var $ = layui.$,
+                active = {
+                    reload: function () {
+                        //执行重载
+                        table.reload('testReload', {
+                            url: '../php/Books.php',
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            },
+                            where: {
+                                action: 'GetAll',
+                                barcode: $('#demoReload').val()
+                            }
+                        });
+                    }
+                };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+
+</body>
+
+</html>

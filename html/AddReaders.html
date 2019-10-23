@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加读者</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>读者ID
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Number" name="Number" autocomplete="off"
+                    placeholder="请输入读者编号 " class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>读者姓名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Name" name="Name" autocomplete="off" placeholder="请输入读者姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="phone" class="layui-form-label">
+                <span class="x-red">*</span>读者密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="PassWord" name="PassWord" autocomplete="off" placeholder="请输入读者密码"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>读者类型
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="TypeId" name="TypeId" class="layui-input" placeholder="请输入读者类型">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>读者条形码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Barcode" name="Barcode" class="layui-input" placeholder="请输入读者条形码">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>性别
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Sex" name="Sex" class="layui-input" placeholder="请输入读者性别">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>入学年份
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="EnrollmentYear" name="EnrollmentYear" class="layui-input" placeholder="请选择入学年份">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>登记日期
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="RegistrationDate" name="RegistrationDate" class="layui-input"
+                    placeholder="请选择登记日期">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>是否丢失
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Loss" name="Loss" class="layui-input" placeholder="是否丢失">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>是否禁用
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Disabled" name="Disabled" class="layui-input" placeholder="是否禁用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">添加</button>
+        </div>
+    </div>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+
+                laydate.render({
+                    elem: '#EnrollmentYear',
+                    trigger: 'click',
+                    type: 'year'
+                });
+
+                laydate.render({
+                    elem: '#RegistrationDate',
+                    trigger: 'click'
+                });
+            });
+
+            $("#btn1").click(function () {
+                var data = {
+                    action: 'Create',
+                    number: $("#Number").val(),
+                    name: $("#Name").val(),
+                    password: $("#PassWord").val(),
+                    typeId: $("#TypeId").val(),
+                    barcode: $("#Barcode").val(),
+                    sex: $("#Sex").val(),
+                    enrollmentYear: $("#EnrollmentYear").val(),
+                    registrationDate: $("#RegistrationDate").val(),
+                    loss: $("#Loss").val(),
+                    disabled: $("#Disabled").val()
+                };
+
+                $.ajax({
+                    url: '../php/Readers.php',
+                    type: 'GET',
+                    data: data,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.code == 0) { //成功
+                            layer.msg("添加读者信息成功", {icon: 1});
+                        } else { //失败
+                            layer.msg(result.msg, { icon: 5 });
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

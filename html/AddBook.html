@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加图书</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书条形码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Barcode" name="Barcode" autocomplete="off" placeholder="请输入图书条形码 "
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书索书号
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="BookCallNo" name="BookCallNo" autocomplete="off" placeholder="请输入图书索书号"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>操作员
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Operator" name="Operator" class="layui-input" placeholder="请输入操作员">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>是否外借
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="State" name="State" class="layui-input" placeholder="是否外借">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>是否禁用
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="Disabled" name="Disabled" class="layui-input" placeholder="是否禁用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">添加</button>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+            });
+
+            $("#btn1").click(function () {
+                var data = {
+                    action: 'Create',
+                    barcode: $("#Barcode").val(),
+                    bookCallNo: $("#BookCallNo").val(),
+                    operator: $("#Operator").val(),
+                    state: $("#State").val(),
+                    disabled: $("#Disabled").val(),
+                };
+
+                $.ajax({
+                    url: '../php/Books.php',
+                    type: 'GET',
+                    data: data,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.code == 0) { //成功
+                            layer.msg("添加图书成功", {icon: 1});
+                        } else { //失败
+                            layer.msg(result.msg, { icon: 5 });
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

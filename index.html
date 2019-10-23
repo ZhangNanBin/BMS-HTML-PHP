@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="x-admin-sm">
+
+<head>
+  <meta charset="UTF-8">
+  <title>图书管理系统登录</title>
+  <link rel="stylesheet" href="./css/font.css">
+  <link rel="stylesheet" href="./css/login.css">
+  <link rel="stylesheet" href="./css/xadmin.css">
+  <script src="./lib/layui/layui.js" charset="utf-8"></script>
+  <script src="./js/jquery-3.3.1.js" charset="utf-8"></script>
+</head>
+
+<body class="login-bg">
+
+  <div class="login layui-anim layui-anim-up">
+    <div class="message">图书管理系统登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form">
+      <input name="number" id="number" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+      <hr class="hr15">
+      <input name="password" id="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+      <hr class="hr15">
+      <div class="layui-form-item">
+        <label class="layui-form-label">登录类型:</label>
+        <div class="layui-input-block">
+          <input type="radio" name="type" value="0" title="操作员" checked>
+          <input type="radio" name="type" value="1" title="读者">
+        </div>
+      </div>
+      <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+      <hr class="hr20">
+    </form>
+  </div>
+
+  <script>
+    $(function () {
+      layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        form.on('submit(login)', function (data) {
+          $.ajax({
+            url: 'php/Login.php',
+            type: 'post',
+            data: {
+              action: 'Login',
+              number: $("#number").val(),
+              password: $("#password").val(),
+              typeId: $('input:radio:checked').val()
+            },
+            dataType: 'json',
+            success: function (result) {
+              if (result.code == 0) { //登录成功
+                console.log(result);
+                if ($('input:radio:checked').val() == 0) {
+                  location.href = 'main.html';
+                  window.localStorage.setItem('user', result.data.Name);
+                } else {
+                  window.localStorage.setItem('user', result.data.Name);
+                  location.href = 'main1.html'
+                }
+
+              } else {
+                layer.msg("账号或密码错误,请重试", { icon: 5 });
+              }
+            }
+          });
+          return false;
+        });
+      });
+    })
+  </script>
+</body>
+
+</html>

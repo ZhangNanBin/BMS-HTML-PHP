@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎管理员：
+                                <span class="x-red" id="tip"></span><span id="time"></span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据统计</div>
+                        <div class="layui-card-body ">
+                            <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>操作员数</h3>
+                                        <p>
+                                            <cite>66</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>读者数</h3>
+                                        <p>
+                                            <cite>12</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>图书库存数</h3>
+                                        <p>
+                                            <cite>99</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>已借图书</h3>
+                                        <p>
+                                            <cite>67</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>图书类别数</h3>
+                                        <p>
+                                            <cite>67</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6 ">
+                                    <a href="javascript:;" class="x-admin-backlog-body">
+                                        <h3>待归还数</h3>
+                                        <p>
+                                            <cite>6766</cite></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">介绍</div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table">
+                                <tbody>
+                                    <tr>
+                                        <th>学校官网</th>
+                                        <td>兴义民族师范学院
+                                            <a href="http://www.xynun.edu.cn/v2/" target="_blank">访问官网</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>版权</th>
+                                        <td>信息技术学院</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <style id="welcome_style"></style>
+                <div class="layui-col-md12">
+                    <blockquote class="layui-elem-quote layui-quote-nm">Copyright © 2011 兴义民族师范学院 技术支持：信息技术学院 </blockquote></div>
+            </div>
+        </div>
+        </div>
+        <script>
+                $(function () {
+                    $('#tip').text(window.localStorage.getItem('user'));
+                    $('#time').text("， 当前时间："+new Date().toLocaleString());
+                })
+            </script>
+    </body>
+</html>

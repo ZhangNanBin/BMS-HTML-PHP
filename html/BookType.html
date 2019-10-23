@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图书类型</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+        onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body demoTable">
+                    <div class="layui-form layui-col-space5">
+
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" id="demoReload" placeholder="请输入图书类别编号" autocomplete="off"
+                                class="layui-input"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加图书类别','AddBookType.html',800,600)">
+                        <i class="layui-icon"></i>添加图书类别</button></div>
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 弹出层 -->
+<div class="layui-row" id="popUpdateTest" style="display:none;margin-left:200px;margin-top:30px">
+    <div class="layui-col-md10">
+        <form class="layui-form" lay-filter="formTestFilter">
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>类别编号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="Number" name="Number" readonly="readonly" autocomplete="off"
+                        placeholder="请输入图书类别编号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">
+                    <span class="x-red">*</span>类别名称
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="Name" name="Name" autocomplete="off" placeholder="请输入图书类别名称"
+                        class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">
+                </label>
+                <a class="layui-btn" id="btn1" Width="60">修改</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+<script type="text/javascript">
+    layui.use(['table', 'layer', 'form'], function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        popForm = layui.form;
+
+        table.render({
+            elem: '#test',
+            toolbar: true,
+            loading: true,
+            title: "图书类别列表",
+            url: '../php/BookType.php',
+            where: {
+                action: 'GetAll'
+            },
+            cellMinWidth: 180,
+            cols: [
+                [{
+                    field: 'Number',
+                    title: '类别编号',
+                    sort: true,
+                    align: 'center'
+                }, {
+                    field: 'Name',
+                    title: '类别名称',
+                    align: 'center',
+                    sort: true
+                },{
+                    field: 'caozuo',
+                    title: '操作',
+                    toolbar: '#barDemo'
+                }]
+            ],
+            id: 'testReload',
+            page: true
+        });
+
+        //start
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') { //编辑
+                layer.open({
+                    type: 1,
+                    title: '编辑',
+                    area: ['800px', '600px'],
+                    content: $("#popUpdateTest")
+                });
+                popForm.val("formTestFilter", {
+                    "Number": data.Number,
+                    "Name": data.Name,
+                });
+                popForm.render(null, 'formTestFilter');
+                //---------------点击修改按钮---------------------------    
+                $("#btn1").click(function () {
+                    layer.confirm('要修改类别编号为《' + data.Number + "》的信息吗?", function (index) {
+                        var edit = {
+                            action:'Update',
+                            number: $("#Number").val(),
+                            name: $("#Name").val(),
+                        };
+                        $.ajax({ // 开始异步请求
+                            url: '../php/BookType.php',
+                            type: 'GET',
+                            data: edit,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            success: function (result) {
+                                if (result.code == 0) { //修改成功
+                                    layer.msg("修改成功", {icon: 1});
+                                } else { //修改失败
+                                    layer.msg(result.msg, { icon: 5 });
+                                }
+                            }
+                        });
+                    }) //弹框结束
+                }); //单击事件
+            } //编辑结束
+
+        }); //end
+
+
+        //---------------表格搜索重载----------------
+        var $ = layui.$,
+            active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        url: '../php/BookType.php',
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            action:'GetAll',
+                            number: $('#demoReload').val()
+                        }
+                    });
+                }
+            };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</html>

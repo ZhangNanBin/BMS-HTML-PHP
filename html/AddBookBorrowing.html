@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图书借阅</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="layui-form" style="margin-left:200px;margin-top:30px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>图书条形码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="bBarcode" name="bBarcode" autocomplete="off" placeholder="请输入图书条形码 "
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>读者条形码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="rBarcode" name="rBarcode" autocomplete="off" placeholder="请输入读者条形码"
+                    class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" id="btn1" Width="60">提交</button>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script charset="utf-8">
+        $(function () {
+            layui.use(['layer', 'laydate'], function () {
+                var layer = layui.layer;
+                var laydate = layui.laydate;
+
+                laydate.render({
+                    elem: '#DatePublication',
+                    trigger: 'click',
+                    type: 'year'
+                });
+            });
+
+            $("#btn1").click(function () {
+                var data = {
+                    action: 'Borrowing',
+                    bBarcode: $("#bBarcode").val(),
+                    rBarcode: $("#rBarcode").val(),
+                };
+
+                $.ajax({
+                    url: '../php/Circulation.php',
+                    type: 'GET',
+                    data: data,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.code == 0) { //成功
+                            layer.msg("借阅成功", { icon: 1 });
+                        } else { //失败
+                            layer.msg(result.msg, { icon: 5 });
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>
