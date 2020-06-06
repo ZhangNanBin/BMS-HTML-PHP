@@ -192,6 +192,11 @@
                             title: '出版社',
                             align: 'center'
                         },
+                       {
+                            field: 'DatePublication',
+                            title: '出版时间',
+                            align: 'center'
+                        },  
                         {
                             field: 'Price',
                             title: '价格',
@@ -199,14 +204,15 @@
                             templet: function (d) {
                                 return "<div style='color:red'>" + d.Price + "</div>"
                             }
-                        }, {
-                            field: 'DatePublication',
-                            title: '出版时间',
-                            align: 'center'
                         },
                         {
                             field: 'Page',
                             title: '页码',
+                            align: 'center'
+                        },
+                        {
+                            field: 'Total',
+                            title: '总册数',
                             align: 'center'
                         },
                         {

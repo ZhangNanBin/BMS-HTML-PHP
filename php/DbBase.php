@@ -43,6 +43,16 @@ function GetAll($sql, $page, $limit)
     return Base($arr, $tempsql, $data, $count);
 }
 
+function GetFull($sql)
+{
+    $DbContext = ConnDB();
+    $result = $DbContext->query($sql);
+    $arr = $DbContext->errorInfo();
+    $data = $result->fetchAll(PDO::FETCH_ASSOC);
+    $arr = $DbContext->errorInfo();
+    return Base($arr, $sql, $data, 0);
+}
+
 function Get($sql)
 {
     $DbContext = ConnDB();

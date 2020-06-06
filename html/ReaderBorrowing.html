@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>BorrowingRecords</title>
+    <link rel="stylesheet" href="../css/font.css" />
+    <link rel="stylesheet" href="../css/xadmin.css" />
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+  </head>
+
+  <body>
+    <div class="x-nav">
+      <a
+        class="layui-btn layui-btn-small"
+        style="line-height: 1.6em; margin-top: 3px; float: right;"
+        onclick="location.reload()"
+        title="刷新"
+      >
+        <i class="layui-icon layui-icon-refresh" style="line-height: 30px;"></i>
+      </a>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <table class="layui-hide" id="test" lay-filter="test"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 弹出层 -->
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+      layui.use(["table", "layer", "form", "laydate"], function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        popForm = layui.form;
+
+        laydate.render({
+          elem: "#DatePublication",
+          trigger: "click",
+          type: "year",
+        });
+
+        table.render({
+          elem: "#test",
+          toolbar: true,
+          loading: true,
+          title: "图书借阅历史列表",
+          url: "../php/ReaderBorrowing.php",
+          where: {
+            action: "GetReaderBorrowing",
+          },
+          cellMinWidth: 120,
+          cols: [
+            [
+              {
+                field: "Number",
+                title: "读者编号",
+                sort: true,
+                align: "center",
+              },
+              {
+                field: "RBarcode",
+                title: "读者条形码",
+                align: "center",
+              },
+              {
+                field: "RName",
+                title: "读者姓名",
+                align: "center",
+              },
+              {
+                field: "BookBarcode",
+                title: "图书条形码",
+                sort: true,
+                align: "center",
+              },
+              {
+                field: "BookCallNo",
+                title: "图书索书号",
+                align: "center",
+              },
+              {
+                field: "BName",
+                title: "书籍名称",
+                align: "center",
+                sort: true,
+              },
+              {
+                field: "TypeNumber",
+                title: "类型编号",
+                align: "center",
+                sort: true,
+              },
+              {
+                field: "StartTime",
+                title: "借阅日期",
+                align: "center",
+                templet:
+                  "<div>{{layui.util.toDateString(d.StartTime, 'yyyy-MM-dd')}}</div>",
+              },
+              {
+                field: "ExpiryTime",
+                title: "到期日期",
+                align: "center",
+                templet:
+                  "<div>{{layui.util.toDateString(d.ExpiryTime, 'yyyy-MM-dd')}}</div>",
+              },
+              {
+                field: "Author",
+                title: "作者",
+                align: "center",
+              },
+              {
+                field: "Translator",
+                title: "译者",
+                align: "center",
+              },
+              {
+                field: "Press",
+                title: "出版社",
+                align: "center",
+              },
+              {
+                field: "DatePublication",
+                title: "出版时间",
+                align: "center",
+              },
+              {
+                field: "Price",
+                title: "价格",
+                align: "center",
+                templet: function (d) {
+                  return "<div style='color:red'>" + d.Price + "</div>";
+                },
+              },
+              {
+                field: "Page",
+                title: "页码",
+                align: "center",
+              }
+            ]
+          ],
+          id: "testReload",
+          page: false,
+        });
+      });
+    </script>
+  </body>
+</html>

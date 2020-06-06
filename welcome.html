@@ -33,42 +33,42 @@
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>操作员数</h3>
                                         <p>
-                                            <cite>66</cite></p>
+                                            <cite id="OperatorCount">0</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>读者数</h3>
                                         <p>
-                                            <cite>12</cite></p>
+                                            <cite id="ReaderCount">0</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>图书库存数</h3>
                                         <p>
-                                            <cite>99</cite></p>
+                                            <cite id="BookCount">0</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>已借图书</h3>
                                         <p>
-                                            <cite>67</cite></p>
+                                            <cite id="TotalCount">0</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>图书类别数</h3>
                                         <p>
-                                            <cite>67</cite></p>
+                                            <cite id="TypeCount">0</cite></p>
                                     </a>
                                 </li>
                                 <li class="layui-col-md2 layui-col-xs6 ">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3>待归还数</h3>
                                         <p>
-                                            <cite>6766</cite></p>
+                                            <cite id="BorowingCount">0</cite></p>
                                     </a>
                                 </li>
                             </ul>
@@ -107,4 +107,17 @@
                 })
             </script>
     </body>
+    <script>
+    $.getJSON("./php/Home.php", { }, function (result) {
+                if (result.code == 0) {
+                    let data = result.data;
+                    $("#TypeCount").html(data.TypeCount);
+                    $("#ReaderCount").html(data.ReaderCount);
+                    $("#OperatorCount").html(data.OperatorCount);
+                    $("#BookCount").html(data.BookCount);
+                    $("#TotalCount").html(data.TotalCount);
+                    $("#BorowingCount").html(data.BorowingCount);
+                }
+            })    
+    </script>
 </html>

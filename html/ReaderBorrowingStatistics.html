@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图书类型</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+        onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body demoTable">
+                    <div class="layui-form layui-col-space5">
+
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" id="demoReload" placeholder="请输入读者名称" autocomplete="off"
+                                class="layui-input"></div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use(['table', 'layer', 'form'], function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        popForm = layui.form;
+
+        table.render({
+            elem: '#test',
+            toolbar: true,
+            loading: true,
+            title: "读者借阅统计",
+            url: '../php/ReaderBorrowing.php',
+            where: {
+                action: 'GetReaderBorrowingStatistics'
+            },
+            cellMinWidth: 180,
+            cols: [
+                [{
+                    field: 'Number',
+                    title: '读者条形码',
+                    sort: true,
+                    align: 'center'
+                }, {
+                    field: 'Name',
+                    title: '读者姓名',
+                    align: 'center',
+                    sort: true
+                }, {
+                    field: 'Total',
+                    title: '读书总册数',
+                    align: 'center',
+                    sort: true
+                }]
+            ],
+            id: 'testReload',
+            page: true
+        });
+
+
+
+        //---------------表格搜索重载----------------
+        var $ = layui.$,
+            active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        url: '../php/ReaderBorrowing.php',
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            action:'GetReaderBorrowingStatistics',
+                            rName: $('#demoReload').val()
+                        }
+                    });
+                }
+            };
+
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</html>

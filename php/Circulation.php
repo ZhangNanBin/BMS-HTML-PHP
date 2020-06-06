@@ -300,7 +300,7 @@ function GetAllSendBack($isGet)
         $sql = "$sql AND SendBack.RBarcode = '$barcode'";
     }
 
-    echo $sqlGetAll($sql, ($isGet ? $_GET['page'] : $_POST['page']), ($isGet ? $_GET['limit'] : $_POST['limit']));
+    echo GetAll($sql, ($isGet ? $_GET['page'] : $_POST['page']), ($isGet ? $_GET['limit'] : $_POST['limit']));
 }
 
 function GetAllFine($isGet)
@@ -318,6 +318,7 @@ function GetAllFine($isGet)
     echo GetAll($sql, ($isGet ? $_GET['page'] : $_POST['page']), ($isGet ? $_GET['limit'] : $_POST['limit']));
 }
 
+// 归还单条欠款
 function PaymentById($isGet)
 {
     $id = $isGet ? $_GET['id'] : $_POST['id'];
@@ -332,6 +333,7 @@ function PaymentById($isGet)
     echo Update($sql);
 }
 
+// 归还读者欠款
 function PaymentByReader($isGet)
 {
     $rBarcode = $isGet ? $_GET['rBarcode'] : $_POST['rBarcode'];
